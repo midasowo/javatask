@@ -61,8 +61,8 @@ public class Main {
         if (showEmptyRooms() != 0) {
             System.out.println("Podaj numer pokoju");
             int choice = input.nextInt();
-            rooms[choice].setAvailable(false);
-            System.out.println("Zarezerwowano pokój: " + rooms[choice]);
+            rooms[choice-1].setAvailable(false);
+            System.out.println("Zarezerwowano pokój: " + rooms[choice-1]);
         } else System.out.println("Nie ma wolnych pokoi");
     }
 
@@ -101,9 +101,9 @@ public class Main {
         if (showFullRooms() != 0) {
             System.out.println("Podaj numer pokoju");
             int choice = input.nextInt();
-            if (rooms[choice].getRoomNumber() == choice) {
-                rooms[choice].setAvailable(true);
-                System.out.println("Zwolniono pokój: " + rooms[choice]);
+            if (rooms[choice-1].getRoomNumber() == choice) {
+                rooms[choice-1].setAvailable(true);
+                System.out.println("Zwolniono pokój: " + rooms[choice-1]);
             }
             else System.out.println("Błędna operacja");
         } else System.out.println("Nie ma wolnych pokoi");
