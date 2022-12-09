@@ -7,8 +7,7 @@ public class Main {
     static HotelRoom room2 = new HotelRoom(2, 1, true);
     static HotelRoom room3 = new HotelRoom(3, 1, true);
 
-    static HotelRoom[] fullRooms = new HotelRoom[3];
-    static HotelRoom[] emptyRooms = new HotelRoom[]{room1, room2, room3};
+    static HotelRoom[] rooms = new HotelRoom[]{room1, room2, room3};
 
     static boolean mainMenu = true;
     static boolean subMenu = true;
@@ -58,32 +57,39 @@ public class Main {
         }
     }
 
-
     static void bookRooms() {
         System.out.println("Podaj numer pokoju");
-        for (int i = 0; i < emptyRooms.length; i++) {
-            System.out.println("(" + (i + 1) + ") " + emptyRooms[i]);
+        for (int i = 0; i < rooms.length; i++) {
+            HotelRoom room = rooms[0];
+            if (room.isAvailable())
+                System.out.println("(" + room.getRoomNumber() + ") " + room);
         }
         int choice = input.nextInt();
-        if (choice < emptyRooms.length) {
-            fullRooms[choice - 1] = emptyRooms[choice - 1];
-            emptyRooms[choice - 1] = null;
-        } else {
-            System.out.println("Błędna wartość");
+        for (int i = 0; i < rooms.length; i++) {
+            HotelRoom room = rooms[i];
+            if (room.isAvailable() && room.getRoomNumber() == choice) {
+                room.setAvailable(false);
+                rooms[i] = room;
+                System.out.println("Zarezerwowano pokój: " + room.getRoomNumber());
+            } else System.out.println("Błędna operacja");
         }
     }
 
     static void showEmptyRooms() {
         System.out.println("Wolne pokoje");
-        for (HotelRoom emptyRoom : emptyRooms) {
-            System.out.println(emptyRoom);
+        for (int i = 0; i < rooms.length; i++) {
+            HotelRoom room = rooms[0];
+            if (room.isAvailable())
+                System.out.println("(" + room.getRoomNumber() + ") " + room);
         }
     }
 
     static void showFullRooms() {
-        System.out.println("Wszystkie pokoje");
-        for (HotelRoom fullRoom : fullRooms) {
-            System.out.println(fullRoom);
+        System.out.println("Zajęte pokoje");
+        for (int i = 0; i < rooms.length; i++) {
+            HotelRoom room = rooms[0];
+            if (!room.isAvailable())
+                System.out.println("(" + room.getRoomNumber() + ") " + room);
         }
     }
 
@@ -94,15 +100,20 @@ public class Main {
 
     static void releaseRoom() {
         System.out.println("Podaj numer pokoju");
-        for (int i = 0; i < fullRooms.length; i++) {
-            System.out.println("(" + (i + 1) + ") " + emptyRooms[i]);
+        for (int i = 0; i < rooms.length; i++) {
+            HotelRoom room = rooms[i];
+            if (!room.isAvailable())
+                System.out.println("(" + room.getRoomNumber() + ") " + room);
         }
         int choice = input.nextInt();
-        if (choice < emptyRooms.length) {
-            emptyRooms[choice - 1] = fullRooms[choice - 1];
-            fullRooms[choice - 1] = null;
-        } else {
-            System.out.println("Błędna wartość");
+        for (HotelRoom room : rooms) {
+            if (!room.isAvailable() && room.getRoomNumber() == choice) {
+                room.setAvailable(true);
+                System.out.println("Zwolniono pokój: " + room.getRoomNumber());
+            } else {
+                System.out.println("Błędna wartość");
+                bookRooms();
+            }
         }
     }
 
